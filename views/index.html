@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>{{title}}</title>
+	<link rel="stylesheet" href="../css/main.css">
+	<script src="/socket.io/socket.io.js"></script>
+	
+
+</head>
+<body>
+	<div class="container">
+		<div class="topDeck">
+			<div class="logo">
+				<h1>Simulator</h1>
+			</div>
+			
+		</div>
+
+		<div class="editorArea">
+				<textarea rows="30" cols="100" id="netlist" style="resize: none;" data-role="none">
+				</textarea>
+		</div>			
+		<div class="buttonArea">
+			<button id="doSubmit">Submit</button>
+			<button id="doSaveNetlist">Save Netlist</button>
+			<button id="doClear">Clear</button>
+		</div>
+	</div>
+
+	<script>
+		console.log("Client Started!!!");
+    	var socket = io.connect('http://localhost:3000');
+  		console.log("Socket Created!!!");
+  		socket.on('loadingPage', function (data) {
+  			console.log('Client:'+data);
+  			socket.emit('user', 'Connection from user Established');
+  		});
+
+
+	</script>
+</body>
+</html>
