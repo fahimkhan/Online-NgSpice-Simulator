@@ -26,6 +26,9 @@
 			<button id="doSaveNetlist">Save Netlist</button>
 			<button id="doClear">Clear</button>
 		</div>
+		<div id="messages">
+			Server acknowledgement go here
+		</div>
 	</div>
 
 	<script>
@@ -37,6 +40,24 @@
   			socket.emit('user', 'Connection from user Established');
   		});
 
+  		var editorContent = document.getElementById("netlist");
+  		var submitButton = document.getElementById("doSubmit");
+		var saveButton = document.getElementById("doSaveNetlist");
+		var clearButton = document.getElementById("doClear");
+		var messages  = document.getElementById("messages");
+
+		submitButton.addEventListener("click", function() {
+			
+			var netlist = editorContent.value;
+
+			console.log("Netlist : " + netlist);
+			socket.emit("netlist", netlist);
+		});
+
+		socket.on("serverMessage", function(message) {
+			console.log("RECEIVED: " + message);
+			messages.innerHTML += "<br>" + message;
+		});
 
 	</script>
 </body>

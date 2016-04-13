@@ -13,9 +13,14 @@ module.exports = function(express,app,fs,os,io){
   		socket.on('user', function (data) {
     		console.log('Server:'+data);
   		});
+
+  		socket.on('netlist',function(netlistContent){
+			console.log('Server :'+netlistContent);
+			socket.emit('serverMessage','Client Message Received');
+		});	
 	});
 
-	
+
     
 	app.use('/',router);
 }
