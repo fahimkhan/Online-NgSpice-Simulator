@@ -20,16 +20,19 @@
 		<div class="editorArea">
 				<textarea rows="30" cols="100" id="netlist" style="resize: none;" data-role="none">
 				</textarea>
-		</div>			
+		</div>		
 		<div class="buttonArea">
-			<button id="doSubmit">Submit</button>
-			<button id="doSaveNetlist">Save Netlist</button>
-			<button id="doClear">Clear</button>
+			<button id="doSubmit" class="button">Submit</button>
+			<button id="doSaveNetlist" class="button">Save Netlist</button>
+			<button id="doClear" class="button">Clear</button>
 		</div>
+
 		<div id="messages">
-			Server acknowledgement go here
+			<p class="fromServer">Server acknowledgement go here</p>
 		</div>
 	</div>
+	
+	
 
 	<script>
 		console.log("Client Started!!!");
