@@ -113,6 +113,10 @@ body,html {
 }
 
 textarea {
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
     text-align: left;
     
 }
+
