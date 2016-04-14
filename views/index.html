@@ -3,25 +3,63 @@
 <head>
 	<meta charset="UTF-8">
 	<title>{{title}}</title>
-	<link rel="stylesheet" href="../css/main.css">
+	<!-- Bootstrap core CSS -->
+	<link rel="stylesheet" href="../css/bootstrap.min-3.3.6.css">
+
+    <!-- Custom styles for this template -->
+    <link href="../css/customstylesheet.css" rel="stylesheet">
+
 	<script src="/socket.io/socket.io.js"></script>
 	
 
 </head>
 <body>
-	<div class="container">
-		<div class="topDeck">
-			<div class="logo">
-				<h1>Simulator</h1>
-			</div>
-			
-		</div>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+     	<div class="container">
+        	<div class="navbar-header">
+          		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            	<span class="sr-only">Toggle navigation</span>
+            	<span class="icon-bar"></span>
+            	<span class="icon-bar"></span>
+            	<span class="icon-bar"></span>
+          		</button>
+          		<a class="navbar-brand" href="#">Online Simulator</a>
+        	</div>
+	        <div id="navbar" class="navbar-collapse collapse">
+	          <!--form class="navbar-form navbar-right">
+	            <div class="form-group">
+	              <input type="text" placeholder="Email" class="form-control">
+	            </div>
+	            <div class="form-group">
+	              <input type="password" placeholder="Password" class="form-control">
+	            </div>
+	            <button type="submit" class="btn btn-success">Sign in</button>
+	          </form-->
+	        </div><!--/.navbar-collapse -->
+	    </div>
+	</nav>
 
-		<div class="editorArea">
-				<textarea rows="30" cols="100" id="netlist" style="resize: none;" data-role="none">
-				</textarea>
-		</div>		
-		<div class="buttonArea">
+	 <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="descNgspice">
+      <div class="container">
+        <h2>Ngspice</h2>
+        <p3>SPICE (Simulation Program with Integrated Circuit Emphasis) is a widely used tool for simulating electrical circuits. The original version was developed at the Electronics Research Laboratory of the University of California, Berkeley. Dozens of variations of SPICE exist, with both free and commercial versions available.
+
+		This site allows you to run ngspice simulations from a web browser environment. Whether you are using a Windows, Linux, or Mac computer, a smart phone, or a tablet, you always should be able to run a SPICE simulation.
+		</p3>
+      </div>
+    </div>
+
+
+	<div class="container">
+		<h2>Editor</h2>
+  		<p>Please write your ngspice netlist in the below editor.</p>
+  		<form role="form">
+    		<div class="form-group editorArea">
+      			<textarea class="form-control" rows="20" id="netlist"></textarea>
+    		</div>
+ 		</form>
+ 		<div class="buttonArea">
 			<button id="doSubmit" class="button">Submit</button>
 			<button id="doSaveNetlist" class="button">Save Netlist</button>
 			<button id="doClear" class="button">Clear</button>
@@ -30,7 +68,21 @@
 		<div id="messages">
 			<p class="fromServer">Server acknowledgement go here</p>
 		</div>
-	</div>
+
+		<hr>
+
+		<footer>
+        	<p>&copy; 2016 FOSSEE, IIT Bombay</p>
+    	</footer>
+
+		
+	</div> <!-- End container -->
+
+
+		
+
+	
+
 	
 	
 
