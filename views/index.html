@@ -56,7 +56,9 @@
   		<p>Please write your ngspice netlist in the below editor.</p>
   		<form role="form">
     		<div class="form-group editorArea">
-      			<textarea class="form-control" rows="20" id="netlist"></textarea>
+      			<textarea class="form-control" rows="20" id="netlist">
+      				
+      			</textarea>
     		</div>
  		</form>
  		<div class="buttonArea">
@@ -79,20 +81,13 @@
 	</div> <!-- End container -->
 
 
-		
-
-	
-
-	
-	
-
 	<script>
 		console.log("Client Started!!!");
     	var socket = io.connect('http://localhost:3000');
   		console.log("Socket Created!!!");
   		socket.on('loadingPage', function (data) {
-  			console.log('Client:'+data);
-  			socket.emit('user', 'Connection from user Established');
+  			console.log('Client : '+data);
+  			socket.emit('user',{socketID:socket.id});
   		});
 
   		var editorContent = document.getElementById("netlist");
@@ -109,8 +104,18 @@
 			socket.emit("netlist", netlist);
 		});
 
+		clearButton.addEventListener("click",function(){
+			var confirmation = confirm("Are you sure to clear the netlist area ?");
+			if (confirmation == true) {
+   				editorContent.value = '';
+			} 
+			else {
+    			console.log("Netlist area not cleared");
+			} 
+		});
+
 		socket.on("serverMessage", function(message) {
-			console.log("RECEIVED: " + message);
+			console.log("RECEIVED : " + message);
 			messages.innerHTML += "<br>" + message;
 		});
 
