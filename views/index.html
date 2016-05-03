@@ -99,8 +99,7 @@
 		submitButton.addEventListener("click", function() {
 			
 			var netlist = editorContent.value;
-
-			console.log("Netlist : " + netlist);
+			console.log("Netlist :"+editorContent.value);
 			socket.emit("netlist", netlist);
 		});
 
@@ -114,10 +113,60 @@
 			} 
 		});
 
+		saveButton.addEventListener("click",function(){
+			var netlist = editorContent.value;
+			//  create a new Blob (html5 magic) that conatins the data from your form feild
+    		var textFileAsBlob = new Blob([netlist], {type:'text/plain'});
+        	
+        	var netListFileName = prompt('Enter name of netlist file to be saved');
+        	if(!netListFileName){
+        		alert("Please give the proper name");
+        	} 
+
+        	console.log(textFileAsBlob);
+
+        	// create a link for our script to 'click'
+    		var downloadLink = document.createElement("a");
+
+        	downloadLink.download = netListFileName+'.cir.out';
+
+        	// Link Name
+    		downloadLink.innerHTML = "Netlist Download Link";
+
+    		// allow our code to work in webkit & Gecko based browsers
+			// without the need for a if / else block.
+    		window.URL = window.URL || window.webkitURL;
+
+    		// Create the link Object.
+    		downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+			// when link is clicked call a function to remove it from
+			// the DOM in case user wants to save a second file.
+    		downloadLink.onclick = destroyClickedElement;
+			// make sure the link is hidden.
+    		downloadLink.style.display = "none";
+			// add the link to the DOM
+    		document.body.appendChild(downloadLink);
+    
+			// click the new link
+    		downloadLink.click();
+		
+
+		});
+
 		socket.on("serverMessage", function(message) {
 			console.log("RECEIVED : " + message);
 			messages.innerHTML += "<br>" + message;
 		});
+        	
+        
+        function destroyClickedElement(event)
+		{
+			// remove the link from the DOM
+    		document.body.removeChild(event.target);
+		}
+    		
+
+		
 
 	</script>
 </body>

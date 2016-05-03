@@ -40,7 +40,7 @@ module.exports = function(express,app,fs,os,io){
 
 		function getSocketID(socket){
 			socketID = socket.id;
-			//Removing first two char i.e /# from socket id
+			//Removing first two char i.e '/#' from socket id
 			socketID = socketID.substring(2);
 			return socketID;
 		}
