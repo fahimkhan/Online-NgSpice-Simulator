@@ -2,7 +2,8 @@ var express = require('express'),
 	path = require('path'),
 	config = require('./config/config.js'),
 	fs = require('fs'),
-    os = require('os')
+    os = require('os'),
+    shelljs = require('shelljs/global')
 
 
 var app = express();

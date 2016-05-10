@@ -25,7 +25,15 @@ module.exports = function(express,app,fs,os,io){
 					return console.log(err);
 				} 
   				console.log('File is stored at '+fileName);
+  				fs.exists(fileName, function(exists) {
+    				if (exists) {
+      					addPlotDetails(fileName);
+      					
+    				}
+  					});
 			});
+
+			
 		});	
 		
 		socket.on('disconnect',function(){
@@ -37,6 +45,13 @@ module.exports = function(express,app,fs,os,io){
 				}
 			});
 		});
+
+		function addPlotDetails(fileName)
+		{
+			
+			//Adding Plot component in a file
+			sed('-i', '.end', '.end \n print allv > plot_allv_'+socketID+'.txt \n print alli > plot_alli_'+socketID+'.txt', fileName);
+		}
 
 		function getSocketID(socket){
 			socketID = socket.id;
