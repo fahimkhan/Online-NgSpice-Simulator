@@ -50,7 +50,7 @@ module.exports = function(express,app,fs,os,io){
 		{
 			
 			//Adding Plot component in a file
-			sed('-i', '.end', '.end \n print allv > plot_allv_'+socketID+'.txt \n print alli > plot_alli_'+socketID+'.txt', fileName);
+			sed('-i', 'run', 'run \n print allv > plot_allv_'+socketID+'.txt \n print alli > plot_alli_'+socketID+'.txt', fileName);
 		}
 
 		function getSocketID(socket){
