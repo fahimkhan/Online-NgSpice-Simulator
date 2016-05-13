@@ -28,6 +28,7 @@ module.exports = function(express,app,fs,os,io){
   				fs.exists(fileName, function(exists) {
     				if (exists) {
       					addPlotDetails(fileName);
+      					executeNgspiceNetlist(fileName);
       					
     				}
   					});
@@ -37,7 +38,7 @@ module.exports = function(express,app,fs,os,io){
 		});	
 		
 		socket.on('disconnect',function(){
-			console.log("Client "+socket.id+" disconnected");
+			console.log("Client "+socketID+" disconnected");
 			fs.exists(fileName, function(exists) {
 				if (exists) {
 					//Deleting file
@@ -50,7 +51,37 @@ module.exports = function(express,app,fs,os,io){
 		{
 			
 			//Adding Plot component in a file
-			sed('-i', 'run', 'run \n print allv > plot_allv_'+socketID+'.txt \n print alli > plot_alli_'+socketID+'.txt', fileName);
+			sed('-i', 'run', 'run \n print allv > /tmp/plot_allv_'+socketID+'.txt \n print alli > /tmp/plot_alli_'+socketID+'.txt', fileName);
+		}
+
+		function executeNgspiceNetlist(fileName)
+		{
+			fs.exists(fileName, function(exists) {
+				if (exists) {
+					exec('ngspice '+fileName, function(code, stdout, stderr) {
+  					console.log('Exit code:', code);
+  					console.log('Program output:', stdout);
+  					console.log('Program stderr:', stderr);
+
+	  				if(stderr){
+	  					switch(stderr){
+	  						case (stderr.match(/Error/) || stderr.match(/error/)||{}).input:
+	  							console.log("Error in executing ngspice netlist");        
+	  							socket.emit('serverMessage','Error while executing ngspice netlist: '+stderr);	
+	  							break;
+	  						default:
+	  							console.log("Ngspice netlist executed successfully");
+	  							socket.emit('serverMessage','Ngspice netlist executed successfully: ');	
+	  							break;
+	  					}
+	  					
+	  				}
+					
+					});
+				}
+			});
+			
+			
 		}
 
 		function getSocketID(socket){
