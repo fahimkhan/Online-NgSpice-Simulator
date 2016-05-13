@@ -41,10 +41,32 @@ module.exports = function(express,app,fs,os,io){
 			console.log("Client "+socketID+" disconnected");
 			fs.exists(fileName, function(exists) {
 				if (exists) {
-					//Deleting file
+					//Deleting ngspice file
 					deleteNetlistFile(fileName);
 				}
 			});
+
+			//Have to change the socketID to lower case as ngspice was converting all text to lowercase
+			var plot_allv_file = '/tmp/plot_allv_'+socketID.toLowerCase()+'.txt'
+			var plot_alli_file = '/tmp/plot_alli_'+socketID.toLowerCase()+'.txt'
+			fs.exists(plot_allv_file, function(exists) {
+				console.log("Check Plot allv "+plot_allv_file)
+				if (exists) {
+					console.log("Check Plot allv files")
+					//Deleting plot allv file
+					deleteNetlistFile(plot_allv_file);
+				}
+			});
+
+			fs.exists(plot_alli_file, function(exists) {
+				console.log("Check Plot alli "+plot_alli_file)
+				if (exists) {
+					console.log("Check Plot alli files")
+					//Deleting plot alli file
+					deleteNetlistFile(plot_alli_file);
+				}
+			});
+
 		});
 
 		function addPlotDetails(fileName)
@@ -88,15 +110,17 @@ module.exports = function(express,app,fs,os,io){
 			socketID = socket.id;
 			//Removing first two char i.e '/#' from socket id
 			socketID = socketID.substring(2);
+			console.log("Return :"+socketID)
 			return socketID;
 		}
 
 		function deleteNetlistFile(fileName){
 			console.log("Delete File "+fileName)
    			fs.unlink(fileName, function(err){
-   				if (err) return console.log(err);
+   				if (err) return console.log("Error while deleting ngspice file :"+err);
 				console.log("success");
 			});
+			
 		}
 
 	});
