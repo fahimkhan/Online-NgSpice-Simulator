@@ -3,12 +3,13 @@ var express = require('express'),
 	config = require('./config/config.js'),
 	fs = require('fs'),
     os = require('os'),
-    shelljs = require('shelljs/global')
+    shelljs = require('shelljs/global'),
+    PythonShell = require('python-shell')
 
 
 var app = express();
 
-
+var scriptPath = path.join(__dirname,'scripts')
 //Set views property
 app.set('views',path.join(__dirname,'views'));
 //set Template engine
@@ -32,7 +33,7 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 
 //Invokes routes.js
-require('./routes/routes.js')(express,app,fs,os,io);
+require('./routes/routes.js')(express,app,fs,os,io,PythonShell,scriptPath);
 
 
 //Listen server

@@ -167,7 +167,7 @@
 
 		socket.on("serverMessage", function(message) {
 			console.log("RECEIVED : " + message);
-			messages.innerHTML += "<br>" + message;
+			messages.innerHTML = "<br>" + message;
 		});
         	
         

@@ -1,7 +1,8 @@
-module.exports = function(express,app,fs,os,io){
+module.exports = function(express,app,fs,os,io,PythonShell,scriptPath){
 	console.log("Server started!!! ");	
 
 	var router = express.Router();
+	var pyEnv = '/usr/bin/python'
 
 	router.get('/',function(req,res,next){
         res.render('index',{host:app.get('host'),title:'Ngspice Simulator'});
@@ -10,7 +11,9 @@ module.exports = function(express,app,fs,os,io){
 
 	io.on('connection', function (socket) {
 		socketID = getSocketID(socket);
-		fileName = '/tmp/'+socketID+'.cir.out';
+		var plot_allv_file = '/tmp/plot_allv_'+socketID.toLowerCase()+'.txt'
+		var plot_alli_file = '/tmp/plot_alli_'+socketID.toLowerCase()+'.txt'
+		var fileName = '/tmp/'+socketID+'.cir.out';
   		socket.emit('loadingPage', 'User with socket ID '+socket.id+' is Connected');
   		
   		socket.on('user', function (data) {
@@ -19,7 +22,7 @@ module.exports = function(express,app,fs,os,io){
 
   		socket.on('netlist',function(netlistContent){
 			console.log('Server : '+netlistContent);
-			socket.emit('serverMessage','Recived message for client '+socketID);
+			// socket.emit('serverMessage','Recived message for client '+socketID);
 			fs.writeFile(fileName, netlistContent, function (err) {
 				if (err){
 					return console.log(err);
@@ -47,10 +50,10 @@ module.exports = function(express,app,fs,os,io){
 			});
 
 			//Have to change the socketID to lower case as ngspice was converting all text to lowercase
-			var plot_allv_file = '/tmp/plot_allv_'+socketID.toLowerCase()+'.txt'
-			var plot_alli_file = '/tmp/plot_alli_'+socketID.toLowerCase()+'.txt'
+			// var plot_allv_file = '/tmp/plot_allv_'+socketID.toLowerCase()+'.txt'
+			// var plot_alli_file = '/tmp/plot_alli_'+socketID.toLowerCase()+'.txt'
 			fs.exists(plot_allv_file, function(exists) {
-				console.log("Check Plot allv "+plot_allv_file)
+				// console.log("Check Plot allv "+plot_allv_file)
 				if (exists) {
 					console.log("Check Plot allv files")
 					//Deleting plot allv file
@@ -59,7 +62,7 @@ module.exports = function(express,app,fs,os,io){
 			});
 
 			fs.exists(plot_alli_file, function(exists) {
-				console.log("Check Plot alli "+plot_alli_file)
+				// console.log("Check Plot alli "+plot_alli_file)
 				if (exists) {
 					console.log("Check Plot alli files")
 					//Deleting plot alli file
@@ -74,6 +77,7 @@ module.exports = function(express,app,fs,os,io){
 			
 			//Adding Plot component in a file
 			sed('-i', 'run', 'run \n print allv > /tmp/plot_allv_'+socketID+'.txt \n print alli > /tmp/plot_alli_'+socketID+'.txt', fileName);
+
 		}
 
 		function executeNgspiceNetlist(fileName)
@@ -92,18 +96,40 @@ module.exports = function(express,app,fs,os,io){
 	  							socket.emit('serverMessage','Error while executing ngspice netlist: '+stderr);	
 	  							break;
 	  						default:
-	  							console.log("Ngspice netlist executed successfully");
-	  							socket.emit('serverMessage','Ngspice netlist executed successfully: ');	
+	  							parsePlotData()
 	  							break;
 	  					}
 	  					
+	  				}
+	  				else{
+	  					parsePlotData()
 	  				}
 					
 					});
 				}
 			});
-			
-			
+				
+		}
+
+		function parsePlotData(){
+			console.log("Ngspice netlist executed successfully "+fileName);
+			// console.log("Allv :"+plot_allv_file)
+			socket.emit('serverMessage','Ngspice netlist executed successfully: ');	
+			var analysisInfo = grep('.tran|.dc|.ac', fileName);
+			console.log("Analysis :"+analysisInfo)
+			var options = {
+				mode: 'text',
+  				pythonPath: pyEnv,
+  				pythonOptions: ['-u'],
+  				scriptPath: scriptPath,//'/home/phantom/Documents/LetsCodeJS/Projects/Online-NgSpice-Simulator/scripts',
+  				args: [analysisInfo, plot_allv_file, plot_alli_file]
+			};
+ 
+			PythonShell.run('parser.py', options, function (err, results) {
+  			if (err) throw err;
+  				// results is an array consisting of messages collected during execution 
+ 			console.log('results: %j', results);
+			});
 		}
 
 		function getSocketID(socket){
