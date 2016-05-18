@@ -118,7 +118,7 @@ module.exports = function(express,app,fs,os,io,PythonShell,scriptPath){
 			var analysisInfo = grep('.tran|.dc|.ac', fileName);
 			console.log("Analysis :"+analysisInfo)
 			var options = {
-				mode: 'text',
+				mode: 'json',
   				pythonPath: pyEnv,
   				pythonOptions: ['-u'],
   				scriptPath: scriptPath,//'/home/phantom/Documents/LetsCodeJS/Projects/Online-NgSpice-Simulator/scripts',
@@ -128,7 +128,10 @@ module.exports = function(express,app,fs,os,io,PythonShell,scriptPath){
 			PythonShell.run('parser.py', options, function (err, results) {
   			if (err) throw err;
   				// results is an array consisting of messages collected during execution 
- 			console.log('results: %j', results);
+ 			// console.log('results: %j', results);
+ 			var resultString = results[0];
+ 			console.log(resultString['x-axis']);
+ 			console.log(typeof(resultString));
 			});
 		}
 

@@ -5,6 +5,7 @@ DC_TYPE = 2
 
 import sys
 import os
+import json
 from decimal import Decimal
 
 class DataExtraction:
@@ -216,7 +217,7 @@ def main():
     app.openFile()
     app.computeAxes()
     
-    print app.val_dict
+    print json.dumps(app.val_dict)
 
 # Call main function
 if __name__ == '__main__':
