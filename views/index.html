@@ -10,6 +10,7 @@
     <link href="../css/customstylesheet.css" rel="stylesheet">
 
 	<script src="/socket.io/socket.io.js"></script>
+	<script src="../js/d3.min.js"></script>
 	
 
 </head>
@@ -78,10 +79,17 @@
 			<button id="doSaveNetlist" class="button">Save Netlist</button>
 			<button id="doClear" class="button">Clear</button>
 		</div>
-
+		
+		<hr>
+		
 		<div id="messages">
 			<p class="fromServer">Server acknowledgement go here</p>
 		</div>
+
+		<div id="plotArea">
+			<p class="fromServer">Plotting Data</p>
+		</div>
+
 
 		<hr>
 
@@ -107,6 +115,7 @@
 		var saveButton = document.getElementById("doSaveNetlist");
 		var clearButton = document.getElementById("doClear");
 		var messages  = document.getElementById("messages");
+		var plotArea = document.getElementById("plotArea");
 
 		submitButton.addEventListener("click", function() {
 			
@@ -169,7 +178,12 @@
 			console.log("RECEIVED : " + message);
 			messages.innerHTML = "<br>" + message;
 		});
-        	
+        
+		socket.on("plotData",function(data){
+			console.log("Data :"+data);
+			plotArea.innerHTML = "<br>" + data['x-axis'];
+		});
+
         
         function destroyClickedElement(event)
 		{

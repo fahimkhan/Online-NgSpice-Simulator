@@ -130,8 +130,9 @@ module.exports = function(express,app,fs,os,io,PythonShell,scriptPath){
   				// results is an array consisting of messages collected during execution 
  			// console.log('results: %j', results);
  			var resultString = results[0];
- 			console.log(resultString['x-axis']);
- 			console.log(typeof(resultString));
+ 			console.log(resultString);
+ 			socket.emit('plotData',resultString);
+ 			
 			});
 		}
 
