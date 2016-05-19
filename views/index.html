@@ -87,7 +87,7 @@
 		</div>
 
 		<div id="plotArea">
-			<p class="fromServer">Plotting Data</p>
+			<!-- <p class="fromServer">Plotting Data</p> -->
 		</div>
 
 
@@ -180,8 +180,28 @@
 		});
         
 		socket.on("plotData",function(data){
-			console.log("Data :"+data);
-			plotArea.innerHTML = "<br>" + data['x-axis'];
+			// console.log("Data :"+jsondata);
+			var svg = d3.select("#plotArea");
+			svg.selectAll("*").remove();
+			d3.select("#plotArea").append("p").text(data['x-axis']);
+			
+				
+								
+			// d3.json(jsondata,function(data){
+			// 	var canvas = d3.select("#plotArea").append("svg")
+			// 		.attr("width",500)
+			// 		.attr("height",500)
+
+				// canvas.selectAll("rect")
+				// 	.data(data)
+				// 		.enter()
+				// 			.append("rect")
+				// 			.attr("width",function ..)
+				// 			.attr("height",50)
+				// 			.attr("y",function)
+				// 			.attr("fill","blue")
+			// });
+			// plotArea.innerHTML = "<br>" + data['x-axis'];
 		});
 
         

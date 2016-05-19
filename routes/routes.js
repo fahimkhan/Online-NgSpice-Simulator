@@ -121,7 +121,7 @@ module.exports = function(express,app,fs,os,io,PythonShell,scriptPath){
 				mode: 'json',
   				pythonPath: pyEnv,
   				pythonOptions: ['-u'],
-  				scriptPath: scriptPath,//'/home/phantom/Documents/LetsCodeJS/Projects/Online-NgSpice-Simulator/scripts',
+  				scriptPath: scriptPath,
   				args: [analysisInfo, plot_allv_file, plot_alli_file]
 			};
  
@@ -131,6 +131,7 @@ module.exports = function(express,app,fs,os,io,PythonShell,scriptPath){
  			// console.log('results: %j', results);
  			var resultString = results[0];
  			console.log(resultString);
+ 			//Emitting Data Points to client
  			socket.emit('plotData',resultString);
  			
 			});
