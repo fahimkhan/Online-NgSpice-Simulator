@@ -130,7 +130,7 @@ module.exports = function(express,app,fs,os,io,PythonShell,scriptPath){
   				// results is an array consisting of messages collected during execution 
  			// console.log('results: %j', results);
  			var resultString = results[0];
- 			console.log(resultString);
+ 			// console.log(resultString);
  			//Emitting Data Points to client
  			socket.emit('plotData',resultString);
  			
