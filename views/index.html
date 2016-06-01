@@ -58,11 +58,16 @@
     		<div class="form-group editorArea">
     		
       			<textarea class="form-control" id="netlist" rows="20"> 
-* Author:
+* Author: FOSSEE
 * Date:
 
+*Netlist Connection Information
+r1  in out 1k
+c1  out gnd 10u
+v1  in gnd pwl(0m 0 0.5m 5 50m 5 50.5m 0 100m 0)
 
-
+*Analysis information
+.tran 10e-03 100e-03 0e-03
 
 *Please do not remove this line
 .control
@@ -76,7 +81,7 @@
  		<div class="buttonArea">
 			<button id="doSubmit" class="button">Submit</button>
 			<button id="doSaveNetlist" class="button">Save Netlist</button>
-			<!-- <button id="doClear" class="button">Clear</button> -->
+			<button id="doClear" class="button">Clear Plots</button>
 		</div>
 		
 		<hr>
@@ -85,16 +90,27 @@
 			<p class="fromServer">Server acknowledgement go here</p>
 		</div>
 
-		<div id="graph" style="width:600px;height:400px;">
-			<!-- <p class="fromServer">Plotting Data</p> -->
+		<div class="container">
+			<div id="graph" style="width:600px;height:400px;display:none;" class="span6">
+			
+			</div>
+			<!-- <div id="plotfunction" class="span3">
+				<p>Plot functions</p>
+			</div> -->
 		</div>
+		
 
 
-		<hr>
+		<!-- <hr> -->
 
-		<footer>
-        	<p>&copy; 2016 FOSSEE, IIT Bombay</p>
-    	</footer>
+		<footer class="footer">
+			<div class="container">
+				<div class="pull-right">
+					<p>&copy; 2016 FOSSEE, IIT Bombay</p>	
+				</div>
+				
+            </div>
+        </footer>
 
 		
 	</div> <!-- End container -->
@@ -112,26 +128,28 @@
   		var editorContent = document.getElementById("netlist");
   		var submitButton = document.getElementById("doSubmit");
 		var saveButton = document.getElementById("doSaveNetlist");
-		// var clearButton = document.getElementById("doClear");
+		var clearButton = document.getElementById("doClear");
 		var messages  = document.getElementById("messages");
 		var plotArea = document.getElementById("plotArea");
 
 		submitButton.addEventListener("click", function() {
-			
 			var netlist = editorContent.value;
 			console.log("Netlist :"+editorContent.value);
 			socket.emit("netlist", netlist);
+			document.getElementById('graph').style.display = 'block';
 		});
 
-		// clearButton.addEventListener("click",function(){
-		// 	var confirmation = confirm("Are you sure to clear the netlist area ?");
-		// 	if (confirmation == true) {
-  //  				editorContent.value = '';
-		// 	} 
-		// 	else {
-  //   			console.log("Netlist area not cleared");
-		// 	} 
-		// });
+		clearButton.addEventListener("click",function(){
+			document.getElementById('graph').style.display = 'none';
+			messages.innerHTML = "";
+			// var confirmation = confirm("Are you sure to clear the netlist area ?");
+			// if (confirmation == true) {
+   // 				editorContent.value = '';
+			// } 
+			// else {
+   //  			console.log("Netlist area not cleared");
+			// } 
+		});
 
 		saveButton.addEventListener("click",function(){
 			var netlist = editorContent.value;
@@ -209,22 +227,7 @@
 			}
 			console.log("traces :"+traces);
 			
-			// var i = 1;
-			// var j = 2
-			// var trace1 = {
-			// 	x: data['x-axis'],
-			// 	y: data[keys[i]],
-			// 	name:keys[i],
-			// 	type: 'scatter'
-			// };
-
-			// var trace2 = {
-			// 	x: data['x-axis'],
-			// 	y: data[keys[j]],
-			// 	name:keys[j],
-			// 	type: 'scatter'
-			// };
-			
+					
 			var dataForPlotly = traces;
 			
 			var layout = {
