@@ -90,16 +90,18 @@ v1  in gnd pwl(0m 0 0.5m 5 50m 5 50.5m 0 100m 0)
 			<p class="fromServer">Server acknowledgement go here</p>
 		</div>
 
-		<div class="container">
-			<div id="graph" style="width:600px;height:400px;display:none;">
-				<!-- <div id="plotfunction">
-					<p>Plot functions</p>
-				</div> -->
+		<div class="container" id="plot" style="display:none;">
+		<div class="row">
+			<div id="graph" style="width:600px;height:400px;" class="col-lg-6">
+				
 			</div>
+			<div id="plotfunction" class="col-lg-6">
+					Hello
+			</div>
+		</div>
 			
 		</div>
-		
-
+	
 
 		<!-- <hr> -->
 
@@ -138,11 +140,11 @@ v1  in gnd pwl(0m 0 0.5m 5 50m 5 50.5m 0 100m 0)
 			var netlist = editorContent.value;
 			console.log("Netlist :"+editorContent.value);
 			socket.emit("netlist", netlist);
-			document.getElementById('graph').style.display = 'block';
+			document.getElementById('plot').style.display = 'block';
 		});
 
 		clearButton.addEventListener("click",function(){
-			document.getElementById('graph').style.display = 'none';
+			document.getElementById('plot').style.display = 'none';
 			messages.innerHTML = "";
 			// var confirmation = confirm("Are you sure to clear the netlist area ?");
 			// if (confirmation == true) {
