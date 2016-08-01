@@ -121,7 +121,8 @@ v1  in gnd pwl(0m 0 0.5m 5 50m 5 50.5m 0 100m 0)
 
 	<script>
 		console.log("Client Started!!!");
-    	var socket = io.connect('http://localhost:3000');
+    	//var socket = io.connect('http://localhost:3000');
+    	var socket = io.connect();
   		console.log("Socket Created!!!");
   		socket.on('loadingPage', function (data) {
   			console.log('Client : '+data);
