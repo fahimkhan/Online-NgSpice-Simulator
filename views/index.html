@@ -136,6 +136,7 @@ v1  in gnd pwl(0m 0 0.5m 5 50m 5 50.5m 0 100m 0)
 		var plotArea = document.getElementById("plotArea");
 
 		submitButton.addEventListener("click", function() {
+			//sleep(3000);
 			var netlist = editorContent.value;
 			console.log("Netlist :"+editorContent.value);
 			socket.emit("netlist", netlist);
@@ -251,6 +252,15 @@ v1  in gnd pwl(0m 0 0.5m 5 50m 5 50.5m 0 100m 0)
 		{
 			// remove the link from the DOM
     		document.body.removeChild(event.target);
+		}
+
+		function sleep(milliseconds) {
+  			var start = new Date().getTime();
+  			for (var i = 0; i < 1e7; i++) {
+    			if ((new Date().getTime() - start) > milliseconds){
+      				break;
+    			}
+  			}
 		}
     		
 

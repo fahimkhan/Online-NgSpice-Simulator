@@ -13,7 +13,7 @@ module.exports = function(express,app,fs,os,io,PythonShell,scriptPath){
 		socketID = getSocketID(socket);
 		var plot_allv_file = '/tmp/plot_allv_'+socketID.toLowerCase()+'.txt'
 		var plot_alli_file = '/tmp/plot_alli_'+socketID.toLowerCase()+'.txt'
-		var fileName = '/tmp/'+socketID+'.cir';
+		var fileName = '/tmp/'+socketID+'.cir.out';
   		socket.emit('loadingPage', 'User with socket ID '+socket.id+' is Connected');
   		
   		socket.on('user', function (data) {
