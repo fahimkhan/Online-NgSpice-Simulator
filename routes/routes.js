@@ -115,7 +115,8 @@ module.exports = function(express,app,fs,os,io,PythonShell,scriptPath){
 			console.log("Ngspice netlist executed successfully "+fileName);
 			// console.log("Allv :"+plot_allv_file)
 			socket.emit('serverMessage','Ngspice netlist executed successfully: ');	
-			var analysisInfo = grep('.tran|.dc|.ac', fileName);
+			//var analysisInfo = grep('.tran|.dc|.ac', fileName); //Not reliable
+			var analysisInfo = getAnalysisInfo(fileName);
 			console.log("Analysis :"+analysisInfo)
 			var options = {
 				mode: 'json',
@@ -152,6 +153,18 @@ module.exports = function(express,app,fs,os,io,PythonShell,scriptPath){
 				console.log("success");
 			});
 			
+		}
+
+		function getAnalysisInfo(fileName){
+			var analysisType;
+			fs.readFileSync(fileName).toString().split('\n').forEach(function (line) {
+				line = line.trim();
+				if(line.startsWith(".ac")||line.startsWith(".tran")||line.startsWith(".dc")){
+					analysisType = line;
+				}
+				
+			});
+			return analysisType;
 		}
 
 	});
