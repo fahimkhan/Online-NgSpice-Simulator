@@ -19,13 +19,14 @@ This repositry contains code for Online NgSpice Simulator
 2. Open browser and go to http://localhost:3000
 
 ##Environment variable
+
 ####For test server
-export NODE_ENV="testing"
+    `export NODE_ENV="testing"`
 
 ####For development
-export NODE_ENV="development"
+    `export NODE_ENV="development"`
 
 ####For production server
-export NODE_ENV="production"
+    `export NODE_ENV="production"`
 
 
