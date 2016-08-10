@@ -49,9 +49,6 @@ module.exports = function(express,app,fs,os,io,PythonShell,scriptPath){
 				}
 			});
 
-			//Have to change the socketID to lower case as ngspice was converting all text to lowercase
-			// var plot_allv_file = '/tmp/plot_allv_'+socketID.toLowerCase()+'.txt'
-			// var plot_alli_file = '/tmp/plot_alli_'+socketID.toLowerCase()+'.txt'
 			fs.exists(plot_allv_file, function(exists) {
 				// console.log("Check Plot allv "+plot_allv_file)
 				if (exists) {
@@ -93,7 +90,9 @@ module.exports = function(express,app,fs,os,io,PythonShell,scriptPath){
 	  					switch(stderr){
 	  						case (stderr.match(/Error/) || stderr.match(/error/)||{}).input:
 	  							console.log("Error in executing ngspice netlist");        
-	  							socket.emit('serverMessage','Error while executing ngspice netlist: '+stderr);	
+	  							socket.emit('clearPlot','clearPlot');
+	  							socket.emit('serverMessage',{"stderr":stderr,"stdout":stdout});
+	  								
 	  							break;
 	  						default:
 	  							parsePlotData()
@@ -114,7 +113,7 @@ module.exports = function(express,app,fs,os,io,PythonShell,scriptPath){
 		function parsePlotData(){
 			console.log("Ngspice netlist executed successfully "+fileName);
 			// console.log("Allv :"+plot_allv_file)
-			socket.emit('serverMessage','Ngspice netlist executed successfully: ');	
+			//socket.emit('serverMessage','Ngspice netlist executed successfully: ');	
 			//var analysisInfo = grep('.tran|.dc|.ac', fileName); //Not reliable
 			var analysisInfo = getAnalysisInfo(fileName);
 			console.log("Analysis :"+analysisInfo)
